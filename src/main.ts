@@ -34,19 +34,18 @@ const selectHeight = selectCanvas.height / numSelectables;
 
 
 //creating the tilemap nested array
-let tilemap: HTMLImageElement[][] = new Array(numTiles);
+let tilemap: number[][] = new Array(numTiles);
 
 for(let i = 0; i < numTiles; i++) {
     let row = new Array(numTiles);
     for (let j = 0; j < numTiles; j++) {
-        row[j] = new Image();
-        row[j].src = "/tile1.png";
+        row[j] = 0;
     }
     tilemap[i] = row;
 }
 
 //track the selected tile
-let currentTile = "/tile1.png";
+let currentTile = 0;
 
 //draw the initial canvases
 redrawTilemap();
@@ -69,7 +68,9 @@ function redrawTilemap()
   gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
     for (let i = 0; i < numTiles; i++) {
         for (let j = 0; j < numTiles; j++) {
-            drawTexture(i, j, gridCtx, tilemap[i][j], gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
+            const img = new Image();
+            img.src = imageUrls[tilemap[i][j]]
+            drawTexture(i, j, gridCtx, img, gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
         }
     }
 }
