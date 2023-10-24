@@ -60,6 +60,11 @@ function drawTexture(row: number, col: number, ctx: CanvasRenderingContext2D, im
     ctx.drawImage(image, row * cellSize, col * cellSize, width, height)
 }
 
+function generateImage(i: number, j: number) {
+    const img = new Image();
+    img.src = imageUrls[tilemap[i][j]]
+    return img;
+}
 
 // ----- Interacting with the main tilemap -----
 
@@ -68,9 +73,7 @@ function redrawTilemap()
   gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
     for (let i = 0; i < numTiles; i++) {
         for (let j = 0; j < numTiles; j++) {
-            const img = new Image();
-            img.src = imageUrls[tilemap[i][j]]
-            drawTexture(i, j, gridCtx, img, gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
+            drawTexture(i, j, gridCtx, generateImage(i, j), gridCanvas.width / numTiles, gridCanvas.height / numTiles, tileSize);
         }
     }
 }
@@ -79,8 +82,7 @@ function redrawTilemap()
 gridCanvas.addEventListener("click", (e) => {
     const coordX = Math.trunc(e.offsetX / tileSize);
     const coordY = Math.trunc(e.offsetY / tileSize);
-
-    tilemap[coordX][coordY].src = currentTile;
+    tilemap[coordX][coordY] = currentTile;
     redrawTilemap();
 })
 
@@ -99,5 +101,5 @@ function drawSelectCanvas()
 
 selectCanvas.addEventListener("click", (e) => {
     const coordY = Math.trunc(e.offsetY / selectHeight);
-    currentTile = imageUrls[coordY];
+    currentTile = coordY;
 })
